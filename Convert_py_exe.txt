@@ -1,0 +1,32 @@
+For changing into .exe file first use:
+pip install pyinstaller
+
+Use the command:
+pyinstaller -w --onefile f_scrape.py
+
+Then wait for the command execute. A spec file will be formed. In this file add the following locations in the datas section. For me the locations were these:
+("C:\\Users\\kulka\\anaconda3\\Lib\\site-packages\\branca\\*.json","branca"),
+("C:\\Users\\kulka\\anaconda3\\Lib\\site-packages\\branca\\templates","templates"),
+("C:\\Users\\kulka\\anaconda3\\Lib\\site-packages\\folium\\templates","templates"),
+
+Also locate the following three files and edit them as follows:
+1.\folium\folium.py
+2.\folium\raster_layers.py
+3.\branca\element.py
+
+Replace the line: ENV = Environment(loader=PackageLoader('folium', 'templates'))
+With the lines:
+import os, sys
+from jinja2 import FileSystemLoader
+if getattr(sys, 'frozen', False):
+        # we are running in a bundle
+    templatedir = sys._MEIPASS
+else:
+    # we are running in a normal Python environment
+    templatedir = os.path.dirname(os.path.abspath(__file__))
+ENV = Environment(loader=FileSystemLoader(templatedir + '\\templates'))
+
+Then finally run the command: pyinstaller f_scrape.spec
+
+Make sure all the external files required are the correct folders.
+And there you have it a python application with a folium module converted to a windows application!!

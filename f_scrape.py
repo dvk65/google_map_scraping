@@ -30,7 +30,7 @@ assert os.path.exists(user_input), "file not at, "+str(user_input)
 
 # In[3]:
 
-
+#adding such useless comments which aren't even helpful, just plain annoying
 fields=[]
 rows=[]
 with open(user_input) as cf:
